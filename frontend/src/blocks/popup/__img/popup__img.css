@@ -1,0 +1,4 @@
+.popup__img {
+  object-fit: contain;
+  margin: 60px auto 32px;
+}

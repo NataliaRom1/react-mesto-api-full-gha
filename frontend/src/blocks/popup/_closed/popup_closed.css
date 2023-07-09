@@ -1,0 +1,21 @@
+.popup_closed {
+  visibility: hidden;
+  opacity: 0;
+  animation: fade-out 0.4s ease-in;
+  -moz-animation: fade-out 0.4s ease-in;
+  -webkit-animation: fade-out 0.4s ease-in;
+  -ms-animation: fade-out 0.4s ease-in;
+  -o-animation: fade-out 0.4s ease-in;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,22 @@
+.authentication__input {
+  background-color: initial;
+  border: 0;
+  border-bottom: 2px solid #CCC;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  height: 27px;
+  line-height: 17px;
+  max-width: 358px;
+  padding: 30px 0 0;
+  width: 100%;
+  color: #CCC;
+}
+
+.authentication__input:focus {
+  outline: none;
+}
+
+.authentication__input::placeholder {
+  caret-color: #CCC;
+}

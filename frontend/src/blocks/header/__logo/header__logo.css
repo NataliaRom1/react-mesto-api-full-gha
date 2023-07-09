@@ -1,0 +1,27 @@
+.header__logo {
+  max-width: 142px;
+  object-fit: contain;
+  margin-bottom: 41px;
+}
+
+@media (max-width: 1279px) and (min-width: 321px) {
+  .header__logo {
+    /* 31.6px - 41px */
+    margin-bottom: calc(31.6px + 9.4 * (100vw - 320px) / 959);
+    /* 103.74px - 142px */
+    max-width: calc(103.74px + 38.26 * (100vw - 320px) / 959);
+  }
+}
+
+@media screen and (max-width: 500px) {
+ .header__logo {
+   margin-left: 27px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .header__logo {
+    margin-bottom: 31.6px;
+    max-width: 103.74px;
+  }
+}

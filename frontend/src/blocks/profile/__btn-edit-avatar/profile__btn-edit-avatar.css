@@ -1,0 +1,26 @@
+.profile__btn-edit-avatar {
+  position: relative;
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  color: transparent;
+}
+
+.profile__btn-edit-avatar::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.profile__btn-edit-avatar:hover::before {
+  cursor: pointer;
+  background-image: url(../../../images/pencil.png);
+  background-size: 26px 26px;
+  background-color: #000;
+  opacity: 0.8;
+  background-position: center;
+  background-repeat: no-repeat;
+}

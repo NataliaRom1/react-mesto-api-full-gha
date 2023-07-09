@@ -1,0 +1,14 @@
+.element__like-icon {
+  margin: 0;
+  padding: 0;
+  border: none;
+  width: 22px;
+  height: 19px;
+  background-image: url(../../../images/heart_white.svg);
+  background-color: transparent;
+}
+
+.element__like-icon:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}

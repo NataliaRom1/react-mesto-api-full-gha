@@ -1,0 +1,7 @@
+.authentication__form {
+  margin: 60px 0 112px;
+  display: flex;
+  flex-direction: column;
+  max-width: 358px;
+  width: 100%;
+}

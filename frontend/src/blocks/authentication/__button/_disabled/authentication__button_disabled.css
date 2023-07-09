@@ -1,0 +1,7 @@
+.authentication__button_disabled {
+  opacity: 0.2;
+}
+
+.authentication__button_disabled:hover {
+  cursor: default;
+}
