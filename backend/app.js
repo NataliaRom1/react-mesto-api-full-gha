@@ -19,7 +19,7 @@ app.use(cookieParser());
 // НО ее добавили в сам Express
 app.use(express.json());
 
-app.use(router);
+app.use('/api', router);
 app.use(errors());
 app.use(errorHandler);
 
