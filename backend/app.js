@@ -6,7 +6,7 @@ const { errors } = require('celebrate');
 const router = require('./routes');
 const errorHandler = require('./midlwares/error');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3000 } = process.env;
 
 // Подключаемся к серверу mongo mongodb://localhost:27017/mestodb   //127.0.0.1:27017/mestodb
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
@@ -25,5 +25,5 @@ app.use(errorHandler);
 
 // Слушаю порт 3000 и передаю колбек, котрый он вызовет в момент, когда начнет слушать.
 app.listen(PORT, () => {
-  console.log('Слушаю порт 3001');
+  console.log('Слушаю порт 3000');
 });
