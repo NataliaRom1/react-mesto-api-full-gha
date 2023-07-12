@@ -6,6 +6,7 @@ const NotFoundError = require('../middlwares/errors/NotFoundError');
 const BadRequestError = require('../middlwares/errors/BadRequestError');
 const ConflictError = require('../middlwares/errors/ConflictError');
 const UnauthorizedError = require('../middlwares/errors/UnauthorizedError');
+
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 // Возвращает всех пользователей
@@ -108,8 +109,8 @@ const login = async (req, res, next) => {
         // Создать JWT
         const jwt = jsonWebToken.sign(
           { _id: user._id },
-          NODE_ENV !== 'production' ? 'SECRET' : JWT_SECRET
-        ) // Делает наш токен уникальным
+          NODE_ENV !== 'production' ? 'SECRET' : JWT_SECRET,
+        ); // Делает наш токен уникальным
 
         // Прикрепить jwt к куке
         res.cookie('jwt', jwt, {
@@ -134,11 +135,11 @@ const login = async (req, res, next) => {
   }
 };
 
-const signOut = (req, res, next) => {
-  return res
+const signOut = (req, res) => {
+  res
     .clearCookie('jwt')
     .status(STATUS_OK)
-    .send({ message: "User signed out successfully" });
+    .send({ message: 'User signed out successfully' });
 };
 
 // Обновляет профиль
