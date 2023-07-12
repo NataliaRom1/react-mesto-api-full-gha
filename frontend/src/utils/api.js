@@ -16,7 +16,7 @@ class Api {
       return res.json();
     }
     // если ошибка, отклоняем промис
-    return Promise.reject(`Ошибка: ${res.status} + ${res.message}` );
+    return Promise.reject(`Ошибка: ${res.status} + ${res.message}`);
   }
 
   // Загрузка информации о пользователе с сервера
@@ -111,8 +111,7 @@ class Api {
 
 // Работа с сервером
 const api = new Api({
-
-  url: 'http://localhost:3000',
+  url: 'https://api.mestonr.nomoredomains.work/',
   headers: {
     'Content-Type': 'application/json',
   },

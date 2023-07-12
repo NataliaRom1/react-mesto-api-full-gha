@@ -1,4 +1,5 @@
-export const BASE_URL = 'http://localhost:3000';
+// export const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = 'https://api.mestonr.nomoredomains.work/';
 
 // Проверка, всё ли в порядке с ответом
 export const check = (res) => {
