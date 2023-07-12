@@ -2,9 +2,10 @@ class Api {
   constructor(config) {
     this._url = config.url;
     this._headers = config.headers;
+    this._credentials = config.credentials;
   }
 
-// Универсальный метод запроса с проверкой ответа
+  // Универсальный метод запроса с проверкой ответа
   _request(url, options) {
     return fetch(url, options).then(this._check)
   }
@@ -15,7 +16,7 @@ class Api {
       return res.json();
     }
     // если ошибка, отклоняем промис
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return Promise.reject(`Ошибка: ${res.status} + ${res.message}` );
   }
 
   // Загрузка информации о пользователе с сервера
@@ -23,6 +24,7 @@ class Api {
     return this._request(`${this._url}/users/me`, {
       method: 'GET',
       headers: this._headers,
+      credentials: this._credentials
     })
   }
 
@@ -31,6 +33,7 @@ class Api {
     return this._request(`${this._url}/cards`, {
       method: 'GET',
       headers: this._headers,
+      credentials: this._credentials
     })
   }
 
@@ -38,9 +41,13 @@ class Api {
   setUserInfo({ name, about }) {
     return this._request(`${this._url}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
-      body: JSON.stringify({ name, about }) //Делаем из объекта строку JSON
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, about }), //Делаем из объекта строку JSON
+      credentials: 'include'
     })
+
   }
 
   // Добавление новой карточки
@@ -48,7 +55,8 @@ class Api {
     return this._request(`${this._url}/cards`, {
       method: 'POST',
       headers: this._headers,
-      body: JSON.stringify({ name, link })
+      body: JSON.stringify({ name, link }),
+      credentials: this._credentials
     })
   }
 
@@ -57,6 +65,7 @@ class Api {
     return this._request(`${this._url}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this._headers,
+      credentials: this._credentials
     })
   }
 
@@ -66,7 +75,8 @@ class Api {
 
     return this._request(`${this._url}/cards/${cardId}/likes`, {
       method,
-      headers: this._headers
+      headers: this._headers,
+      credentials: this._credentials
     })
   }
 
@@ -75,6 +85,7 @@ class Api {
     return this._request(`${this._url}/cards/${cardId}/likes`, {
       method: 'PUT',
       headers: this._headers,
+      credentials: this._credentials
     })
   }
 
@@ -83,6 +94,7 @@ class Api {
     return this._request(`${this._url}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: this._headers,
+      credentials: this._credentials
     })
   }
 
@@ -91,18 +103,20 @@ class Api {
     return this._request(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
-      body: JSON.stringify({ avatar }) //Делаем из объекта строку JSON
+      body: JSON.stringify({ avatar }), //Делаем из объекта строку JSON
+      credentials: this._credentials
     })
   }
 }
 
 // Работа с сервером
 const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-62',
+
+  url: 'http://localhost:3000',
   headers: {
-    authorization: '1b89146d-38a1-46b2-8f80-71ac6c2466b0',
     'Content-Type': 'application/json',
-  }
+  },
+  credentials: 'include', // Куки посылаются вместе с запросом
 });
 
 export default api;

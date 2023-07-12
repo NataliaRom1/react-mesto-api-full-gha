@@ -1,8 +1,8 @@
 const Card = require('../models/card'); // Экспорт модели карточки
 const { STATUS_OK, STATUS_CREATED } = require('../utils/status');
-const NotFoundError = require('../midlwares/errors/NotFoundError');
-const BadRequestError = require('../midlwares/errors/BadRequestError');
-const ForbiddenError = require('../midlwares/errors/ForbiddenError');
+const NotFoundError = require('../middlwares/errors/NotFoundError');
+const BadRequestError = require('../middlwares/errors/BadRequestError');
+const ForbiddenError = require('../middlwares/errors/ForbiddenError');
 
 // Возвращает все карточки
 const getCards = async (req, res, next) => {

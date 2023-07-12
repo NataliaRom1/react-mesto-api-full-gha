@@ -34,9 +34,9 @@ function EditAvatarPopup(props) {
   React.useEffect(() => {
     if (props.isOpen) {
       avatarRef.current.value = "";
-      setFormValid(false);
+      setLinkError(true)
     }
-     else {
+    else {
       setLinkError('');
     }
   }, [props.isOpen]);

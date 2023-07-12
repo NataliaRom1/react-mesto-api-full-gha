@@ -3,10 +3,12 @@ const express = require('express'); // Экспорт express
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
+const cors = require('./middlwares/cors');
 const router = require('./routes');
-const errorHandler = require('./midlwares/error');
+const errorHandler = require('./middlwares/error');
+const { requestLogger, errorLogger } = require('./middlwares/logger');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3000 } = process.env;
 
 // Подключаемся к серверу mongo mongodb://localhost:27017/mestodb   //127.0.0.1:27017/mestodb
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
@@ -18,12 +20,20 @@ app.use(cookieParser());
 // Чтобы req наполнился данными нужно было экспортировать и вызвать body-parser,
 // НО ее добавили в сам Express
 app.use(express.json());
-
-app.use('/api', router);
+app.use(cors);
+app.use(requestLogger); // подключаем логгер запросов
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+app.use( router);
+// app.use('/api', router);
+app.use(errorLogger); // подключаем логгер ошибок
 app.use(errors());
 app.use(errorHandler);
 
 // Слушаю порт 3000 и передаю колбек, котрый он вызовет в момент, когда начнет слушать.
 app.listen(PORT, () => {
-  console.log('Слушаю порт 3001');
+  console.log('Слушаю порт 3000');
 });

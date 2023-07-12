@@ -2,9 +2,9 @@ const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const userRoutes = require('./users');
 const cardRoutes = require('./cards');
-const { createUser, login } = require('../controllers/users');
-const auth = require('../midlwares/auth');
-const NotFoundError = require('../midlwares/errors/NotFoundError');
+const { createUser, login, signOut } = require('../controllers/users');
+const auth = require('../middlwares/auth');
+const NotFoundError = require('../middlwares/errors/NotFoundError');
 const urlPattern = require('../utils/constants');
 
 router.post('/signup', celebrate({
@@ -23,6 +23,8 @@ router.post('/signin', celebrate({
     password: Joi.string().required(),
   }),
 }), login); // Аутентификация пользователя (Проверка что вы это вы)
+
+router.post('/signout', signOut); // Выйти из аккаунта
 
 router.use(auth);
 

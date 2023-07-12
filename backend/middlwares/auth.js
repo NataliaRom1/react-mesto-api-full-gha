@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('./errors/UnauthorizedError');
 // Мидлвара это функция которая будет вызываться на каждый запрос
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const auth = (req, res, next) => {
   const token = req.cookies.jwt;
@@ -12,8 +13,8 @@ const auth = (req, res, next) => {
   let payload; // Полезная нагрузка (чем мы нагрузили наш запрос)
 
   try {
-    payload = jwt.verify(token, 'SECRET');
-    // payload = jwt.verify(token, process.env['JWT_SECRET']);
+    // payload = jwt.verify(token, 'SECRET');
+    payload = jwt.verify(token, NODE_ENV !== 'production' ? 'SECRET' : JWT_SECRET);
   } catch (err) {
     return next(new UnauthorizedError('Need authentication'));
   }

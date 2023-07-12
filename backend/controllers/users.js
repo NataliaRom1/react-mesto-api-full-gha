@@ -2,10 +2,11 @@ const bcrypt = require('bcryptjs'); // Библиотека для хэширо�
 const jsonWebToken = require('jsonwebtoken'); // Библиотека для создания токена
 const User = require('../models/user'); // Экспорт модели юзера
 const { STATUS_OK, STATUS_CREATED } = require('../utils/status');
-const NotFoundError = require('../midlwares/errors/NotFoundError');
-const BadRequestError = require('../midlwares/errors/BadRequestError');
-const ConflictError = require('../midlwares/errors/ConflictError');
-const UnauthorizedError = require('../midlwares/errors/UnauthorizedError');
+const NotFoundError = require('../middlwares/errors/NotFoundError');
+const BadRequestError = require('../middlwares/errors/BadRequestError');
+const ConflictError = require('../middlwares/errors/ConflictError');
+const UnauthorizedError = require('../middlwares/errors/UnauthorizedError');
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 // Возвращает всех пользователей
 const getUsers = async (req, res, next) => {
@@ -105,10 +106,11 @@ const login = async (req, res, next) => {
       const isValidUser = await bcrypt.compare(String(password), user.password);
       if (isValidUser) {
         // Создать JWT
-        const jwt = jsonWebToken.sign({
-          _id: user._id,
-        }, 'SECRET'); // Второй параметр - "секрет", который делает наш токен уникальным
-        // }, process.env['JWT_SECRET']); // Второй параметр - "секрет", который делает наш токен уникальным
+        const jwt = jsonWebToken.sign(
+          { _id: user._id },
+          NODE_ENV !== 'production' ? 'SECRET' : JWT_SECRET
+        ) // Делает наш токен уникальным
+
         // Прикрепить jwt к куке
         res.cookie('jwt', jwt, {
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 дней
@@ -132,18 +134,25 @@ const login = async (req, res, next) => {
   }
 };
 
+const signOut = (req, res, next) => {
+  return res
+    .clearCookie('jwt')
+    .status(STATUS_OK)
+    .send({ message: "User signed out successfully" });
+};
+
 // Обновляет профиль
 const updateProfile = async (req, res, next) => {
   const { name, about } = req.body;
 
   try {
-    const user = await User.updateOne(
+    const user = await User.findByIdAndUpdate(
       req.user._id,
       { name, about },
       { new: true, runValidators: true },
     );
     if (user) {
-      (res.status(STATUS_OK).send({ data: user }));
+      res.status(STATUS_OK).send({ user });
     } else {
       throw new NotFoundError('User not found');
     }
@@ -167,7 +176,7 @@ const updateAvatar = async (req, res, next) => {
       { new: true, runValidators: true },
     );
     if (user) {
-      (res.status(STATUS_OK).send({ data: user }));
+      (res.status(STATUS_OK).send({ user }));
     } else {
       throw new NotFoundError('User not found');
     }
@@ -185,6 +194,7 @@ module.exports = {
   getUserById,
   createUser,
   login,
+  signOut,
   updateProfile,
   updateAvatar,
   getUserInfo,

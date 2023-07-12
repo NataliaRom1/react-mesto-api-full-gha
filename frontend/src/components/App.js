@@ -18,7 +18,6 @@ import Login from './Login';
 import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
 
-
 function App() {
   const navigate = useNavigate();
 
@@ -63,7 +62,7 @@ function App() {
   // Обработчик клика про лайку
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api.toggleLike(card._id, !isLiked)
@@ -90,12 +89,13 @@ function App() {
   // Обновление данных пользователя
   function handleUpdateUser(data) {
     setIsLoading(true);
+
     api.setUserInfo({
       name: data.name,
       about: data.about,
     })
       .then((userData) => {
-        setCurrentUser(userData);
+        setCurrentUser(userData.user);
         closeAllPopups();
       })
       .catch(err => console.log('Ошибка: ', err))
@@ -108,7 +108,7 @@ function App() {
     setIsLoading(true);
     api.editAvatar({ avatar: data.avatar })
       .then((userData) => {
-        setCurrentUser(userData);
+        setCurrentUser(userData.user);
         closeAllPopups();
       })
       .catch(err => console.log('Ошибка: ', err))
@@ -132,19 +132,15 @@ function App() {
   }
 
   function checkToken() {
-    const jwt = localStorage.getItem('token'); //Получаю token
-    if (jwt) {
-      auth.checkToken(jwt)
-        .then(user => {
-          if (user) {
-            setLoggedIn(true);
-            setEmail(user.data.email);
-            navigate('/', { replace: true });
-          }
-
-        })
-        .catch(err => console.log(err));
-    }
+    auth.checkToken()
+      .then(user => {
+        if (user) {
+          setLoggedIn(true);
+          setEmail(user.data.email);
+          navigate('/', { replace: true });
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   useEffect(() => {
@@ -153,12 +149,12 @@ function App() {
 
   function handleRegisteration({ email, password }) {
     auth.register(email, password)
-      .then((data) => {
-        if (data) {
+      .then(() => {
           setIsSuccess(true);
           navigate('/sign-in', { replace: true });
         }
-      })
+      // }
+      )
       .catch((err) => {
         setIsSuccess(false);
         console.log(err);
@@ -168,13 +164,10 @@ function App() {
 
   function handleLogin({ email, password }) {
     auth.authorize(email, password)
-      .then((user) => {
-        if (user.token) {
-          localStorage.setItem('token', user.token); // Сохраняю token
+      .then(() => {
           setLoggedIn(true);
           setEmail(email);
           navigate('/', { replace: true });
-        }
       })
       .catch((err) => {
         console.log(err);
@@ -182,18 +175,23 @@ function App() {
   }
 
   function handleSignOut() {
-    setLoggedIn(false);
-    localStorage.removeItem('token');// Удаляю token
-    navigate('/sign-in');
+    auth.signOut()
+      .then(() => {
+        setLoggedIn(false);
+        navigate('/sign-in', { replace: true });
+      })
+      .catch((err) => console.log(err));
   };
 
   // Эффект при монтировании, который будет вызывать api.getUserInfo и обновлять стейт-переменную из полученного значения
   useEffect(() => {
+
+    checkToken();
+    // Получение данных пользователя и начальных карточек с сервера вместе, если пользователь залогинился
     if (loggedIn) {
-      // Получение данных пользователя и начальных карточек с сервера вместе, если пользователь залогинился
       Promise.all([api.getUserInfo(), api.getInitialCards()])
         .then(([userData, initialCardsData]) => {
-          setCurrentUser(userData);
+          setCurrentUser(userData.data);
           setCards(initialCardsData);
         })
         .catch((err) => {
@@ -252,7 +250,7 @@ function App() {
           <PopupWithForm
             name="delete"
             title="Вы уверены?"
-            buttonText={isLoading ? 'Удаление...' : 'Да'}/>
+            buttonText={isLoading ? 'Удаление...' : 'Да'} />
 
           {/* Попап редактирования аватара профиля */}
           <EditAvatarPopup
