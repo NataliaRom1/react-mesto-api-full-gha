@@ -111,7 +111,7 @@ class Api {
 
 // Работа с сервером
 const api = new Api({
-  url: 'https://api.mestonr.nomoredomains.work/',
+  url: 'https://api.mestonr.nomoredomains.work',
   headers: {
     'Content-Type': 'application/json',
   },

@@ -1,9 +1,9 @@
 // Массив доменов, с которых разрешены кросс-доменные запросы
 const allowedCors = [
-  'http://mestonr.nomoredomains.work/',
-  'https://mestonr.nomoredomains.work/',
-  'http://api.mestonr.nomoredomains.work/',
-  'https://api.mestonr.nomoredomains.work/',
+  'http://mestonr.nomoredomains.work',
+  'https://mestonr.nomoredomains.work',
+  'http://api.mestonr.nomoredomains.work',
+  'https://api.mestonr.nomoredomains.work',
   'http://localhost:3000',
   'http://localhost:3001',
 ];
