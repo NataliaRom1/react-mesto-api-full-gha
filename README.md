@@ -9,8 +9,8 @@
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 158.160.36.129
 
-Frontend https://...
+Frontend https://mestonr.nomoredomains.work
 
-Backend https://...
+Backend https://api.mestonr.nomoredomains.work
