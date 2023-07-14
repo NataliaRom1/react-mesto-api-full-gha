@@ -20,7 +20,7 @@
 
 ## **Стек технологий**
 
-# Frontend
+### Frontend
 
 - HTML5;
 - CSS3;
@@ -31,7 +31,7 @@
 - React.JS;
 - Webpack
 
-# Backend
+### Backend
 
 - Express;
 - Node.js;
