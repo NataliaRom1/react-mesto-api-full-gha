@@ -42,8 +42,6 @@
 
 Адрес репозитория: https://github.com/NataliaRom1/react-mesto-api-full-gha
 
-IP-адрес 158.160.36.129
-
 Frontend https://mestonr.nomoredomains.work
 
 Backend https://api.mestonr.nomoredomains.work
